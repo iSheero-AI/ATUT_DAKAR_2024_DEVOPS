@@ -1,0 +1,54 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/chat-app:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/chat-app:${{ github.sha }}
+    
+    - name: Deploy to OVHcloud via SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.OVHCLOUD_HOST }}
+        username: ${{ secrets.OVHCLOUD_USERNAME }}
+        key: ${{ secrets.OVHCLOUD_SSH_PRIVATE_KEY }}
+        script: |
+          # Pull the latest Docker image
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/atut-app:latest
+          
+          # Stop and remove existing container if it exists
+          docker stop atut-app || true
+          docker rm atut-app || true
+          
+          # Run the new container
+          docker run -d \
+            --name atut-app \
+            -p 8000:8000 \
+            -v ./chat.db:/app/chat.db \
+            ${{ secrets.DOCKERHUB_USERNAME }}/atut-app:latest
