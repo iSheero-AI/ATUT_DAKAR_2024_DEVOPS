@@ -43,6 +43,11 @@ jobs:
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           # Pull the latest Docker image
           docker pull ${{ secrets.DOCKER_USERNAME }}/atut_devops:latest || true
+
+          # Ensure chat.db exists
+          if [ ! -f "$(pwd)/chat.db" ]; then
+            touch "$(pwd)/chat.db"
+          fi
           
           # Stop and remove existing container if it exists
           docker stop atut_devops || true
@@ -52,5 +57,5 @@ jobs:
           docker run -d \
             --name atut_devops \
             -p 8000:8000 \
-            -v   "$(pwd)/chat.db:/app/chat.db" \
+            -v   "$(pwd)/chat.db:/app/chat.db" \ 
             ${{ secrets.DOCKER_USERNAME }}/atut_devops:latest
