@@ -40,7 +40,7 @@ jobs:
         key: ${{ secrets.OVHCLOUD_SSH_PRIVATE_KEY }}
         script: |
           # Pull the latest Docker image
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/atut_devops:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/atut_devops:latest
           
           # Stop and remove existing container if it exists
           docker stop atut_devops || true
