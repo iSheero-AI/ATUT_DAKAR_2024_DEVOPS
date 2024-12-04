@@ -52,5 +52,5 @@ jobs:
           docker run -d \
             --name atut_devops \
             -p 8000:8000 \
-            -v ./chat.db:/app/chat.db \
+            -v   "$(pwd)/chat.db:/app/chat.db" \
             ${{ secrets.DOCKER_USERNAME }}/atut_devops:latest
