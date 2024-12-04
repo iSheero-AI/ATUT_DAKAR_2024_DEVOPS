@@ -40,15 +40,15 @@ jobs:
         key: ${{ secrets.OVHCLOUD_SSH_PRIVATE_KEY }}
         script: |
           # Pull the latest Docker image
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/atut-app:latest
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app:latest
           
           # Stop and remove existing container if it exists
-          docker stop atut-app || true
-          docker rm atut-app || true
+          docker stop chat-app || true
+          docker rm chat-app || true
           
           # Run the new container
           docker run -d \
-            --name atut-app \
+            --name chat-app \
             -p 8000:8000 \
             -v ./chat.db:/app/chat.db \
-            ${{ secrets.DOCKER_USERNAME }}/atut-app:latest
+            ${{ secrets.DOCKER_USERNAME }}/chat-app:latest
