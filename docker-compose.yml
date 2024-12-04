@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: python_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./chat.db:/app/chat.db  # Volume to persist the SQLite database
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env  
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+    
+ 
