@@ -29,8 +29,8 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/chatapp:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/chatapp:${{ github.sha }}
+          ${{ secrets.DOCKERHUB_USERNAME }}/atut_devops:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/atut_devops:${{ github.sha }}
     
     - name: Deploy to OVHcloud via SSH
       uses: appleboy/ssh-action@master
@@ -40,15 +40,15 @@ jobs:
         key: ${{ secrets.OVHCLOUD_SSH_PRIVATE_KEY }}
         script: |
           # Pull the latest Docker image
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chatapp:latest
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/atut_devops:latest
           
           # Stop and remove existing container if it exists
-          docker stop chatapp || true
-          docker rm chatapp || true
+          docker stop atut_devops || true
+          docker rm atut_devops || true
           
           # Run the new container
           docker run -d \
-            --name chatapp \
+            --name atut_devops \
             -p 8000:8000 \
             -v ./chat.db:/app/chat.db \
-            ${{ secrets.DOCKER_USERNAME }}/chatapp:latest
+            ${{ secrets.DOCKER_USERNAME }}/atut_devops:latest
