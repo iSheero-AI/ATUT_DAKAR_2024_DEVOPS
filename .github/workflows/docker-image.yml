@@ -29,8 +29,8 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/atut_devops:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/atut_devops:${{ github.sha }}
+          ${{ secrets.DOCKER_USERNAME }}/atut_devops:latest
+          ${{ secrets.DOCKER_USERNAME }}/atut_devops:${{ github.sha }}
     
     - name: Deploy to OVHcloud via SSH
       uses: appleboy/ssh-action@master
