@@ -54,8 +54,9 @@ jobs:
           docker rm atut_devops || true
           
           # Run the new container
-          docker run -p 8000:8000 \
-	--name devops-atut-sn-container \
-	--volume /usr/bin/docker:/usr/bin/docker \
-	devops-atut-sn
+          docker run -d \
+            --name atut_devops \
+            -p 8000:8000 \
+            #-v   "$(pwd)/chat.db:/app/chat.db" \ 
+            ${{ secrets.DOCKER_USERNAME }}/atut_devops:latest
 
