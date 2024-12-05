@@ -54,8 +54,8 @@ jobs:
           docker rm atut_devops || true
           
           # Run the new container
-          docker run -d \
-            --name atut_devops \
-            -p 8000:8000 \
-            ${{ secrets.DOCKER_USERNAME }}/atut_devops:latest
+          docker run -p 8000:8000 \
+	--name devops-atut-sn-container \
+	--volume /usr/bin/docker:/usr/bin/docker \
+	devops-atut-sn
 
