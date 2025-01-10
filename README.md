@@ -41,9 +41,12 @@ Job build-and-deploy : Ce job s'exécute sur un runner Ubuntu (version la plus r
 ## Stage 5 : Déploiement sur OVHcloud via SSH :
 
 - **appleboy/ssh-action@master** : Cette action permet de se connecter à un serveur distant via SSH (`OVHcloud`) et d'y exécuter un script.
-  - **Le script fait** :
-- Se connecte à Docker Hub avec les secrets.
-- Tire la dernière image Docker construite.
-- Crée un fichier chat.db si nécessaire.
-- Arrête et supprime un container Docker existant s'il est présent.
-- Lance un nouveau container avec la dernière image Docker.
+Le script fait :
+  - **Se connecte à Docker Hub avec les secrets.**
+  - **Tire la dernière image Docker construite.**
+  - **Crée un fichier chat.db si nécessaire.**
+  - **Arrête et supprime un container Docker existant s'il est présent.**
+  - **Lance un nouveau container avec la dernière image Docker.**
+
+## Test du deploiement
+  Apres le deploiement on test l'API au niveau du navigateur avec l'IP du serveur et le port de connexion puis on accede a l'agent AI avec Swagger-FastAPI  
